@@ -8,26 +8,23 @@ export function App(): JSX.Element {
     const q = gsap.utils.selector(appRef)
 
     const tlRef = React.useRef<gsap.core.Timeline>();
-    const [reversed, setReversed] = React.useState(false);
 
     React.useEffect(() => {
         tlRef.current = gsap.timeline()
             .to(q("." + styles.box), {
-                rotate: 360,
-            })
-            .to(q("." + styles.circle), {
-                x: 100,
+                scale: 1.5,
             })
     }, []);
-    React.useEffect(() => {
-        tlRef.current.reversed(reversed);
-    }, [reversed]);
+    const handleEnter = React.useCallback(() => {
+        tlRef.current.reversed(true)
+    }, [])
+    const handleLeave = React.useCallback(() => {
+        tlRef.current.reversed(false)
+    }, [])
 
     return (
-        <div className={styles.App} ref={appRef}>
-            <button onClick={() => setReversed(!reversed)}>点击我</button>
-            <div className={styles.box}>Box</div>
-            <div className={styles.circle}>Circle</div>
+        <div className={styles.App} ref={appRef} >
+            <div className={styles.box} onMouseEnter={handleEnter} onMouseLeave={handleLeave}>Box</div>
         </div>
     );
 }
