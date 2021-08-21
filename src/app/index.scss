@@ -11,6 +11,11 @@
   color: lightblue;
 }
 
+.circle {
+  @extend .box;
+  border-radius: 50%;
+}
+
 .App {
   display: flex;
   flex-direction: column;

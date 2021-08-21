@@ -3,35 +3,31 @@ import gsap from 'gsap'
 import styles from './index.scss'
 
 
-function Box(props: { children: React.ReactNode }) {
-    const {children} = props
-    return <div className={styles.box}>{children}</div>;
-}
-
-function Container() {
-    return <div><Box>Nested Box</Box></div>;
-}
-
-
 export function App(): JSX.Element {
     const appRef = React.useRef();
     const q = gsap.utils.selector(appRef)
 
+    const tlRef = React.useRef<gsap.core.Timeline>();
+    const [reversed, setReversed] = React.useState(false);
+
     React.useEffect(() => {
-        gsap.to(q("." + styles.box), {
-            x: 100,
-            stagger: 0.33,
-            repeat: -1,
-            repeatDelay: 1,
-            yoyo: true
-        });
-    });
+        tlRef.current = gsap.timeline()
+            .to(q("." + styles.box), {
+                rotate: 360,
+            })
+            .to(q("." + styles.circle), {
+                x: 100,
+            })
+    }, []);
+    React.useEffect(() => {
+        tlRef.current.reversed(reversed);
+    }, [reversed]);
 
     return (
         <div className={styles.App} ref={appRef}>
-            <Box>Box1</Box>
-            <Container/>
-            <Box>Box2</Box>
+            <button onClick={() => setReversed(!reversed)}>点击我</button>
+            <div className={styles.box}>Box</div>
+            <div className={styles.circle}>Circle</div>
         </div>
     );
 }
