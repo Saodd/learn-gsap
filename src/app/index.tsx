@@ -1,10 +1,20 @@
 import * as React from 'react';
-import styles from './index.scss';
+import gsap from 'gsap'
+import styles from './index.scss'
 
 export function App(): JSX.Element {
-  return (
-    <div>
-      <p className={styles.myClass}>Hello, Lewin!</p>
-    </div>
-  );
+    const boxRef = React.useRef();
+
+    React.useEffect(() => {
+        gsap.to(boxRef.current, {
+            duration: 5,
+            rotation: "+=360",
+        });
+    });
+
+    return (
+        <div className={styles.App}>
+            <div className={styles.box} ref={boxRef}>Hello</div>
+        </div>
+    );
 }
