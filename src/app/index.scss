@@ -1,25 +1,39 @@
-.box {
-  width: 100px;
-  height: 100px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  background-color: green;
-  font-weight: 600;
-  color: lightblue;
+.app {
+  width: 100%;
+  height: 100%;
+  background-color: black;
 }
 
-.circle {
-  @extend .box;
-  border-radius: 50%;
+.background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
 }
 
-.App {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
+.loadingContainer {
+  @extend .background;
+  background-repeat: no-repeat;
+  background-position: center;
+  overflow: hidden;
+  background-color: black;
+
+  &.hide {
+    display: none;
+  }
+}
+
+.videoStart {
+  @extend .background;
+  object-fit: cover;
+
+  &.hide {
+    display: none;
+  }
+}
+
+.videoMain {
+  @extend .videoStart;
+  z-index: 0;
 }

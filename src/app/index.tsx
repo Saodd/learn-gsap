@@ -1,36 +1,63 @@
 import * as React from 'react';
-import gsap from 'gsap'
-import styles from './index.scss'
-
+import styles from './index.scss';
+import classNames from 'classnames';
+import videoStart from '../../static/start.mp4';
+import videoMain from '../../static/main_bg.mp4';
+import imageLoading from '../../static/loading.gif';
 
 export function App(): JSX.Element {
-    const ref1 = React.useRef();
-    const ref2 = React.useRef();
-    const ref3 = React.useRef();
-    const ref4 = React.useRef();
-    const tl = React.useRef<gsap.core.Timeline>()
+  const [loading1, setLoading1] = React.useState(true);
+  const [loading2, setLoading2] = React.useState(true);
 
-    React.useEffect(() => {
-        tl.current = gsap.timeline({repeat: -1, repeatDelay: 1, yoyo: true})
-            .to(ref1.current, {duration: 1, x: 200})
-            .from(ref2.current, {duration: 1, x: 200, scale: 0.2}, "+=1")  // 在上一个动画之后+1秒才开始
-            .addLabel("LabeHAHAHA")
-            .to(ref3.current, {
-                duration: 1, x: 200, scale: 2, y: 20,
-                onUpdate: function () {
-                    const elem: gsap.TweenTarget = this.targets()[0]
-                    console.log(gsap.getProperty(elem, "x"))
-                }
-            }, "LabeHAHAHA")
-            .to(ref4.current, {duration: 1, x: 200, rotation: 360}, "LabeHAHAHA");
-    }, []);
+  const ref1 = React.useRef<HTMLVideoElement>();
+  const [status1, setStatus1] = React.useState(0);
+  const handleLoad1 = React.useCallback(async () => {
+    setLoading1(false);
+  }, []);
+  React.useEffect(() => {
+    if (!loading1 && !loading2 && status1 === 0) {
+      setStatus1(1);
+      ref1.current.play();
+    }
+  }, [loading1, loading2, status1]);
+  const handleEnd1 = React.useCallback(() => {
+    setStatus1(2);
+    ref2.current.play();
+  }, []);
 
-    return (
-        <div className={styles.App}>
-            <div className={styles.box} ref={ref1}>Box1</div>
-            <div className={styles.box} ref={ref2}>Box2</div>
-            <div className={styles.box} ref={ref3}>Box3</div>
-            <div className={styles.box} ref={ref4}>Box4</div>
-        </div>
-    );
+  const ref2 = React.useRef<HTMLVideoElement>();
+  const handleLoad2 = React.useCallback(async () => {
+    setLoading2(false);
+  }, []);
+
+  return (
+    <div className={styles.app}>
+      <div
+        className={classNames(styles.loadingContainer, loading1 || loading2 || styles.hide)}
+        style={{ backgroundImage: `url(${imageLoading})` }}
+      />
+
+      <video
+        className={classNames(styles.videoStart, (loading1 || status1 === 2) && styles.hide)}
+        muted
+        preload="auto"
+        ref={ref1}
+        onLoadedData={handleLoad1}
+        onEnded={handleEnd1}
+      >
+        <source src={videoStart} type="video/mp4" />
+      </video>
+
+      <video
+        className={classNames(styles.videoMain, status1 === 2 || styles.hide)}
+        muted
+        preload="auto"
+        loop
+        ref={ref2}
+        onLoadedData={handleLoad2}
+      >
+        <source src={videoMain} type="video/mp4" />
+      </video>
+    </div>
+  );
 }

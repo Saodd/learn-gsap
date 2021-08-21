@@ -43,8 +43,8 @@ module.exports = {
                 ],
             },
             {
-                test: /\.(png|svg|jpg|jpeg|gif)$/i,
-                include: path.resolve('src'),
+                test: /\.(png|svg|jpg|jpeg|gif|mp4)$/i,
+                include: path.resolve('static'),
                 type: "asset/resource",
             },
             {
