@@ -11,11 +11,17 @@ export function App(): JSX.Element {
     const tl = React.useRef<gsap.core.Timeline>()
 
     React.useEffect(() => {
-        tl.current = gsap.timeline({repeat: -1, repeatDelay: 1})
+        tl.current = gsap.timeline({repeat: -1, repeatDelay: 1, yoyo: true})
             .to(ref1.current, {duration: 1, x: 200})
             .from(ref2.current, {duration: 1, x: 200, scale: 0.2}, "+=1")  // 在上一个动画之后+1秒才开始
             .addLabel("LabeHAHAHA")
-            .to(ref3.current, {duration: 1, x: 200, scale: 2, y: 20}, "LabeHAHAHA")
+            .to(ref3.current, {
+                duration: 1, x: 200, scale: 2, y: 20,
+                onUpdate: function () {
+                    const elem: gsap.TweenTarget = this.targets()[0]
+                    console.log(gsap.getProperty(elem, "x"))
+                }
+            }, "LabeHAHAHA")
             .to(ref4.current, {duration: 1, x: 200, rotation: 360}, "LabeHAHAHA");
     }, []);
 
