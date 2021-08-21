@@ -4,28 +4,26 @@ import styles from './index.scss'
 
 
 export function App(): JSX.Element {
-    const appRef = React.useRef();
-    const q = gsap.utils.selector(appRef)
-
-    // 此处改为useEffect即可观察到闪烁。
-    React.useLayoutEffect(() => {
-        const animation1 = gsap.fromTo(q('.' + styles.box), {
-            opacity: 0,
-        }, {
-            opacity: 1,
+    const objRef = React.useRef({count: 0});
+    React.useEffect(() => {
+        gsap.to(objRef.current, {
+            count: 200,
             duration: 1,
-            stagger: 0.2,
+            onUpdate: () => {
+                console.log(objRef.current.count)
+            }
         })
-        return () => {
-            animation1.kill()
-        }
+    }, [])
+
+    const [, setRefresh] = React.useState(0)
+    const refresh = React.useCallback(() => {
+        setRefresh(Date.now())
     }, [])
 
     return (
-        <div className={styles.App} ref={appRef}>
-            <div className={styles.box}>Box1</div>
-            <div className={styles.box}>Box2</div>
-            <div className={styles.box}>Box3</div>
+        <div className={styles.App}>
+            <button onClick={refresh}>render</button>
+            <div className={styles.box}>{objRef.current.count}</div>
         </div>
     );
 }
