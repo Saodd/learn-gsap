@@ -37,3 +37,62 @@
   @extend .videoStart;
   z-index: 0;
 }
+
+.header {
+  min-width: 999px;
+  height: 56px;
+  position: relative;
+  z-index: 1000;
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  box-shadow: 0 2px 4px 0 rgb(0 0 0 / 8%);
+
+  .content {
+    padding: 10px 24px;
+    line-height: 30px;
+    position: relative;
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+}
+
+.main {
+  position: relative;
+  min-height: calc(100vh - 56px);
+}
+
+
+.main1 {
+  @extend .main;
+  display: flex;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 1s;
+
+  &.show {
+    opacity: 1;
+  }
+
+  .img1 {
+    height: 25vh;
+    position: absolute;
+    bottom: 11vh;
+  }
+
+  .img2 {
+    height: 5vh;
+    position: absolute;
+    bottom: 5vh;
+    animation: bounce-down 1s ease-in-out infinite alternate;
+    @keyframes bounce-down {
+      to {
+        bottom: 3vh
+      }
+    }
+  }
+}
+
+
