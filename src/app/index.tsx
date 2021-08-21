@@ -7,20 +7,22 @@ export function App(): JSX.Element {
     const appRef = React.useRef();
     const q = gsap.utils.selector(appRef)
 
-    const handleEnter = React.useCallback(() => {
-        gsap.to(q("." + styles.box), {
-            scale: 1.5,
-        })
-    }, [])
-    const handleLeave = React.useCallback(() => {
-        gsap.to(q("." + styles.box), {
-            scale: 1,
+    // 此处改为useEffect即可观察到闪烁。
+    React.useLayoutEffect(() => {
+        gsap.fromTo(q('.' + styles.box), {
+            opacity: 0,
+        }, {
+            opacity: 1,
+            duration: 1,
+            stagger: 0.2,
         })
     }, [])
 
     return (
         <div className={styles.App} ref={appRef}>
-            <div className={styles.box} onMouseEnter={handleEnter} onMouseLeave={handleLeave}>Box</div>
+            <div className={styles.box}>Box1</div>
+            <div className={styles.box}>Box2</div>
+            <div className={styles.box}>Box3</div>
         </div>
     );
 }
