@@ -9,13 +9,16 @@ export function App(): JSX.Element {
 
     // 此处改为useEffect即可观察到闪烁。
     React.useLayoutEffect(() => {
-        gsap.fromTo(q('.' + styles.box), {
+        const animation1 = gsap.fromTo(q('.' + styles.box), {
             opacity: 0,
         }, {
             opacity: 1,
             duration: 1,
             stagger: 0.2,
         })
+        return () => {
+            animation1.kill()
+        }
     }, [])
 
     return (
