@@ -6,6 +6,8 @@ import videoMain from '../../static/main_bg.mp4';
 import imageLoading from '../../static/loading.gif';
 import imageMain1 from '../../static/main-1.png';
 import imageMain2 from '../../static/main-2.png';
+import imageMain3 from '../../static/main-3.png';
+import imageMainBg from '../../static/main_bg.png';
 
 export function App(): JSX.Element {
   const [loading1, setLoading1] = React.useState(true);
@@ -79,32 +81,55 @@ export function App(): JSX.Element {
 
 function Main(props: { visible: boolean }): JSX.Element {
   const { visible } = props;
+  const [page, setPage] = React.useState(1);
   return (
-    <div className={classNames(styles.main1, visible && styles.show)}>
-      <MainPage1 />
+    <>
+      <MainPage1 handover={() => setPage(2)} visible={visible && page === 1} />
+      <MainPage2 handover={() => setPage(1)} visible={visible && page === 2} />
+    </>
+  );
+}
+
+function MainPage1(props: { handover: () => void; visible: boolean }): JSX.Element {
+  const { handover, visible } = props;
+  const scrollRef = React.useRef<HTMLDivElement>();
+  const handleScroll = React.useCallback((e: React.WheelEvent<HTMLDivElement>) => {
+    if (e.deltaY > 0) handover();
+  }, []);
+
+  return (
+    <div className={classNames(styles.main1, visible || styles.hide)} ref={scrollRef} onWheel={handleScroll}>
+      <img src={imageMain1} className={styles.img1} alt="act-detail" />
+      <img src={imageMain2} className={styles.img2} alt="arrow" onClick={handover} />
     </div>
   );
 }
 
-function MainPage1(): JSX.Element {
-  const ref = React.useRef<HTMLImageElement>();
-  // React.useEffect(() => {
-  //   const tween = gsap.to(ref.current, {
-  //     y: '2vh',
-  //     repeat: -1,
-  //     duration: 1,
-  //     ease: "power1.inOut",
-  //     yoyo: true,
-  //   });
-  //   return ()=>{
-  //     tween.kill()
-  //   }
-  // }, []);
-
+function MainPage2(props: { handover: () => void; visible: boolean }): JSX.Element {
+  const { handover, visible } = props;
+  const scrollRef = React.useRef<HTMLDivElement>();
+  const handleScroll = React.useCallback((e: React.WheelEvent<HTMLDivElement>) => {
+    if (e.deltaY < 0 && scrollRef.current.scrollTop + e.deltaY < 0) {
+      scrollRef.current.scrollTo({ top: 0 });
+      handover();
+    }
+  }, []);
+  React.useEffect(() => {
+    scrollRef.current.scrollTo({ top: 0 });
+  }, [visible]);
   return (
-    <>
-      <img src={imageMain1} className={styles.img1} alt="act-detail" />
-      <img src={imageMain2} className={styles.img2} alt="arrow" ref={ref} />
-    </>
+    <div
+      className={classNames(styles.main2, visible || styles.hide)}
+      ref={scrollRef}
+      onWheel={handleScroll}
+      style={{ backgroundImage: `url("${imageMainBg}")` }}
+    >
+      <div className={styles.main2body}>
+        <img src={imageMain3} alt="活动奖励列表" />
+        <div style={{ height: '1000px', backgroundColor: 'white' }}>
+          <p>假装我是评论列表</p>
+        </div>
+      </div>
+    </div>
   );
 }

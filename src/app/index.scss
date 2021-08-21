@@ -60,21 +60,17 @@
 }
 
 .main {
-  position: relative;
+  position: absolute;
+  width: 100vw;
   min-height: calc(100vh - 56px);
 }
 
 
 .main1 {
   @extend .main;
+  @extend .easeOpacity;
   display: flex;
   justify-content: center;
-  opacity: 0;
-  transition: opacity 1s;
-
-  &.show {
-    opacity: 1;
-  }
 
   .img1 {
     height: 25vh;
@@ -86,6 +82,7 @@
     height: 5vh;
     position: absolute;
     bottom: 5vh;
+    cursor: pointer;
     animation: bounce-down 1s ease-in-out infinite alternate;
     @keyframes bounce-down {
       to {
@@ -95,4 +92,34 @@
   }
 }
 
+.easeOpacity {
+  opacity: 1;
+  transition: opacity 1s;
 
+  &.hide {
+    opacity: 0;
+    z-index: -5;
+  }
+}
+
+
+.main2 {
+  @extend .main;
+  @extend .easeOpacity;
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 100%;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: black;
+  background-size: cover;
+
+  .main2body {
+    max-width: 976px;
+    margin: 56px auto;
+    img {
+      width: 100%;
+    }
+  }
+}
