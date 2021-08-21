@@ -82,5 +82,6 @@ module.exports = {
         "axios": "axios",
         "react": "React",
         "react-dom": "ReactDOM",
+        "gsap": "gsap",
     }
 };
