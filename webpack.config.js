@@ -24,8 +24,9 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            title: "Project Template: React",
-            template: "./src/index.html"
+            title: "黄绿合战7th - Learn GSAP - Lewin",
+            template: "./src/index.html",
+            favicon: './src/favicon.ico',
         }),
     ],
     mode: "production",
